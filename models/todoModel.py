@@ -20,10 +20,6 @@ class Task(Base):
     taskName = Column(String(20))
     taskDescribe = Column(String(200))
     date = Column(Date)
-    user_id = Column(Integer, ForeignKey=('users.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
 
     owner = relationship("User", back_populates="tasks")
-
-
-
-

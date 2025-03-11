@@ -4,6 +4,8 @@ from models.todoModel import User, Task
 from datetime import date
 
 def init_db():
+    Base.metadata.drop_all(bind=engine)
+
     Base.metadata.create_all(bind=engine)
     session = Session(bind=engine)
 
@@ -16,8 +18,8 @@ def init_db():
     session.commit()
 
     # add example task to users
-    task1 = Task(taskName="do homework", taskDescribe="math, english", date=date.today(), userId=user1.id)
-    task2 = Task(taskName="meeting", taskDescribe="subjects: main plan, date, how dangerous, enemies", date=date.today(), userId=user2.id)
+    task1 = Task(taskName="do homework", taskDescribe="math, english", date=date.today(), user_id=user1.id)
+    task2 = Task(taskName="meeting", taskDescribe="subjects: main plan, date, how dangerous, enemies", date=date.today(), user_id=user2.id)
     session.add(task1)
     session.add(task2)
     session.commit()
