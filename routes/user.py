@@ -1,23 +1,20 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from typing import List
-
-from sqlalchemy.ext.asyncio import async_session, AsyncSession
-from sqlalchemy.orm import Session, sessionmaker
-from database.database import SessionLocal, engine
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from database.database import SessionLocal
 from schemas.schemas import UserResponse
 from models.todoModel import User
 
 router = APIRouter()
 
 # database session
-def get_db():
-    db = SessionLocal()
-    try:
+async def get_db():
+    async with SessionLocal() as db:
         yield db
-    finally:
-        db.close()
 
 @router.get("/users", response_model=List[UserResponse])
-def get_users(db: Session = Depends(get_db)):
-    allUsers = db.query(User).all()
-    return allUsers
+async def get_users(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(User))
+    users = result.scalars().all()
+    return users
