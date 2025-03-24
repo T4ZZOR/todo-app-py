@@ -10,6 +10,11 @@ class UserResponse(BaseModel):
     class Config:
         from_attributes  = True
 
+class UserCreate(BaseModel):
+    username: str
+    email: str
+    password: str
+
 class TaskResponse(BaseModel):
     id: int
     taskName: str
@@ -19,3 +24,8 @@ class TaskResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class TaskCreate(BaseModel):
+    taskName: str
+    taskDescribe: str
+    date: date
