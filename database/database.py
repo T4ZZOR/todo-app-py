@@ -1,12 +1,10 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
+from sqlalchemy.orm import declarative_base
 
-URL_DATABASE = 'postgresql://postgres:admin@localhost:5432/todo-python-app'
+URL_DATABASE = 'postgresql+asyncpg://postgres:admin@localhost:5432/todo-python-app'
 
-engine = create_engine(URL_DATABASE)
+engine = create_async_engine(URL_DATABASE, echo=True)
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
 Base = declarative_base()
